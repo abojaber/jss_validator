@@ -27,8 +27,19 @@ validations = {
             {
                 condition: "bigger_than",
                 value: 5,
-                error: "AF004",
+                error: "AF003",
                 message: "%s1 is not bigger than %s2",
+            },
+        ],
+    },
+    smaller_than_five: {
+        required: true,
+        roles: [
+            {
+                condition: "smaller_than",
+                value: 11,
+                error: "AF004",
+                message: "%s1 is not smaller than %s2",
             },
         ],
     },

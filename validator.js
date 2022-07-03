@@ -53,6 +53,21 @@ var validate = function (payload, validations) {
                         );
                     }
                     break;
+                case "smaller_than":
+                    var vl =
+                        typeof role.value == "number"
+                            ? role.value
+                            : GetPropertyValue(payload, role.value);
+                    if (!(payload[key] < vl)) {
+                        console.log(
+                            parameterizedString(
+                                role.message,
+                                payload[key],
+                                role.value
+                            )
+                        );
+                    }
+                    break;
             }
         });
     }
