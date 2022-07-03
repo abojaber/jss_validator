@@ -10,6 +10,17 @@ validations = {
       },
     ],
   },
+  name: {
+    required: false,
+    roles: [
+      {
+        regex: /\w{3,10}/,
+        condition: "regex",
+        error: "AF0002",
+        message: "name not correct",
+      },
+    ],
+  },
 };
 
 module.export = {
