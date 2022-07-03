@@ -24,6 +24,12 @@ sample for validate string is more than 3 char
 
 ### Compare to fixed number
 
+compare payload number with a number (fixed)
+
+-   bigger_than ref: 3401b1e10a9c36d78d87cd8fa70806ef90d121d7
+-   smaller_than ref: b71e9ed45280038223ce203971d195eea242b7fa
+-   compare with other field in payload
+
 ### Validate Date
 
 ### Validate Date Range

@@ -27,6 +27,22 @@ const parameterizedString = (...args) => {
         return params[variableIndex];
     });
 };
+
+// https://stackoverflow.com/questions/37510640/how-to-get-property-value-from-a-javascript-object
+/**
+ * return data of dataToRetrieve key in object
+ * @param {*} object
+ * @param {string} dataToRetrieve
+ * @returns value
+ */
+function GetPropertyValue(object, dataToRetrieve) {
+    dataToRetrieve.split(".").forEach(function (token) {
+        if (object) object = object[token];
+    });
+
+    return object;
+}
+
 // END HELPERS
 //
 var validate = function (payload, validations) {

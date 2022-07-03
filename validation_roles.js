@@ -32,12 +32,23 @@ validations = {
             },
         ],
     },
-    smaller_than_five: {
+    smaller_than_eleven: {
         required: true,
         roles: [
             {
                 condition: "smaller_than",
                 value: 11,
+                error: "AF004",
+                message: "%s1 is not smaller than %s2",
+            },
+        ],
+    },
+    smaller_than_bigger: {
+        required: true,
+        roles: [
+            {
+                condition: "smaller_than",
+                value: "bigger_than_five",
                 error: "AF004",
                 message: "%s1 is not smaller than %s2",
             },
