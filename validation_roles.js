@@ -65,6 +65,17 @@ validations = {
             },
         ],
     },
+    next_visit: {
+        required: true,
+        roles: [
+            {
+                condition: "after_date",
+                date: new Date(),
+                error: "AF004",
+                message: "%s1 is not after %s2",
+            },
+        ],
+    },
 };
 
 module.export = {

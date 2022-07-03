@@ -85,13 +85,28 @@ var validate = function (payload, validations) {
                     }
                     break;
                 case "before_date":
-                    console.log("before date");
                     var dt = new Date(payload[key]);
                     var vl =
                         role.date instanceof Date
                             ? role.date
                             : GetPropertyValue(payload, role.date);
                     if (!(new Date(vl).getTime() > dt.getTime())) {
+                        console.log(
+                            parameterizedString(
+                                role.message,
+                                payload[key],
+                                role.date
+                            )
+                        );
+                    }
+                    break;
+                case "after_date":
+                    var dt = new Date(payload[key]);
+                    var vl =
+                        role.date instanceof Date
+                            ? role.date
+                            : GetPropertyValue(payload, role.date);
+                    if (!(new Date(vl).getTime() < dt.getTime())) {
                         console.log(
                             parameterizedString(
                                 role.message,
