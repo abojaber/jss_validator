@@ -76,6 +76,23 @@ validations = {
             },
         ],
     },
+    current_visit: {
+        required: true,
+        roles: [
+            {
+                condition: "after_date",
+                date: "birth_day",
+                error: "AF004",
+                message: "%s1 is not after %s2",
+            },
+            {
+                condition: "before_date",
+                date: "next_visit",
+                error: "AF004",
+                message: "%s1 is not after %s2",
+            },
+        ],
+    },
 };
 
 module.export = {

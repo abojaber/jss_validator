@@ -28,9 +28,15 @@ compare payload number with a number (fixed)
 
 -   bigger_than ref: 3401b1e10a9c36d78d87cd8fa70806ef90d121d7
 -   smaller_than ref: b71e9ed45280038223ce203971d195eea242b7fa
--   compare with other field in payload
+-   compare with other field in payload `this is common`
 
 ### Validate Date
+
+compare dates
+
+-   date before ref: fca0d75392984bd4052cb1128e737f9db5dff1fa
+-   date after ref: ff4b7d739887e97e57123603ec4e5b4d9e029656
+-   date between 2 dates
 
 ### Validate Date Range
 
