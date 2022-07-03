@@ -4,6 +4,7 @@ payload = {
     bigger_than_five: 5.01,
     smaller_than_eleven: 10.01,
     smaller_than_bigger: 2,
+    birth_day: "2009-01-01",
 };
 
 module.export = {

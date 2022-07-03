@@ -54,6 +54,17 @@ validations = {
             },
         ],
     },
+    birth_day: {
+        required: true,
+        roles: [
+            {
+                condition: "before_date",
+                date: new Date("2005-02-02"),
+                error: "AF004",
+                message: "%s1 is not before %s2",
+            },
+        ],
+    },
 };
 
 module.export = {
