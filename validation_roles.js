@@ -104,6 +104,23 @@ validations = {
             },
         ],
     },
+    mid_number: {
+        required: true,
+        roles: [
+            {
+                condition: "bigger_than",
+                value: "smaller_than_bigger",
+                error: "AF004",
+                message: "%s1 is not smaller than %s2",
+            },
+            {
+                condition: "smaller_than",
+                value: "bigger_than_five",
+                error: "AF004",
+                message: "%s1 is not smaller than %s2",
+            },
+        ],
+    },
 };
 
 module.export = {

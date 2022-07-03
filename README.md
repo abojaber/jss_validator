@@ -40,4 +40,8 @@ compare dates
 
 ### Validate Options (List)
 
+provide a list of values separated by `|`
+
+-   ref: 74772e545eda46e97248921f3e19e9047a27fb71
+
 ### Validate Number Range
