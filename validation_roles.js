@@ -93,6 +93,17 @@ validations = {
             },
         ],
     },
+    sex: {
+        required: true,
+        roles: [
+            {
+                condition: "in_list",
+                value: "Male|Female",
+                error: "AF004",
+                message: "%s1 not in accepted values (%s2)",
+            },
+        ],
+    },
 };
 
 module.export = {

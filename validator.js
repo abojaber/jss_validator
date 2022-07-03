@@ -116,6 +116,17 @@ var validate = function (payload, validations) {
                         );
                     }
                     break;
+                case "in_list":
+                    if (!role.value.split("|").includes(String(payload[key]))) {
+                        console.log(
+                            parameterizedString(
+                                role.message,
+                                payload[key],
+                                role.value
+                            )
+                        );
+                    }
+                    break;
             }
         });
     }

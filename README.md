@@ -38,8 +38,6 @@ compare dates
 -   date after ref: ff4b7d739887e97e57123603ec4e5b4d9e029656
 -   date between 2 dates
 
-### Validate Date Range
-
 ### Validate Options (List)
 
 ### Validate Number Range
