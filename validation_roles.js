@@ -21,6 +21,17 @@ validations = {
       },
     ],
   },
+  bigger_than_five: {
+    required: true,
+    roles: [
+      {
+        condition: "bigger_than",
+        value: 5,
+        error: "AF004",
+        message: "%s1 is not bigger than %s2",
+      },
+    ],
+  },
 };
 
 module.export = {

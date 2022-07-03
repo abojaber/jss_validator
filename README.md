@@ -22,6 +22,8 @@ sample for validate string is more than 3 char
 
 - ref commit: 63b86fdf11ea3a311525a340ddb8a437312df3ee
 
+### Compare to fixed number
+
 ### Validate Date
 
 ### Validate Date Range
