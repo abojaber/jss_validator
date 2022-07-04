@@ -8,6 +8,13 @@ validations = {
                 error: "AF0001",
                 message: "field should 10 digits",
             },
+            {
+                condition: "function",
+                value: "validate_id_type",
+                param: "id_type",
+                error: "AF001A",
+                message: "id_number is not correct id_type",
+            },
         ],
     },
     name: {
@@ -122,7 +129,7 @@ validations = {
         ],
     },
     random: {
-        required: true,
+        required: false,
         roles: [],
     },
 };

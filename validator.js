@@ -42,7 +42,14 @@ function GetPropertyValue(object, dataToRetrieve) {
 
     return object;
 }
-
+function validate_id_type(id_type, id_number) {
+    switch (id_type) {
+        case "NAT":
+            return !/^(1)\d{9,9}$/.test(id_number);
+        case "IQA":
+            return !/^(4|2)\d{9,9}$/.test(id_number);
+    }
+}
 // END HELPERS
 //
 var validate = function (payload, validations) {
@@ -136,6 +143,12 @@ var validate = function (payload, validations) {
                                 role.value
                             )
                         );
+                    }
+                    break;
+                case "function":
+                    id_type = GetPropertyValue(payload, role.param); // TODO: simplify this
+                    if (eval(role.value)(id_type, payload[key])) {
+                        console.log(role.message, payload[key]);
                     }
                     break;
             }
