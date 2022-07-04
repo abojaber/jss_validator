@@ -6,7 +6,7 @@ This project aim to provide you with simple validator to use it against json. ma
 
 ## using this script
 
-### Regix Validation
+### Regex Validation
 
 An easy simple way to make validation is using regix and below some sample for it.
 
@@ -45,3 +45,9 @@ provide a list of values separated by `|`
 -   ref: 74772e545eda46e97248921f3e19e9047a27fb71
 
 ### Validate Number Range
+
+### Validate required fields
+
+This will check if the field is not submitted (`undefined`) or its value is `null` including `""` & `"null"`
+
+-   you have to check `validator.js` file.

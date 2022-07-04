@@ -121,6 +121,10 @@ validations = {
             },
         ],
     },
+    random: {
+        required: true,
+        roles: [],
+    },
 };
 
 module.export = {

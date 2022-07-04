@@ -9,6 +9,7 @@ payload = {
     current_visit: "2022-01-02",
     sex: "Male",
     mid_number: 4,
+    random: "null",
 };
 
 module.export = {

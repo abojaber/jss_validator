@@ -47,6 +47,17 @@ function GetPropertyValue(object, dataToRetrieve) {
 //
 var validate = function (payload, validations) {
     for (key in validations) {
+        //check if field required
+        if (validations[key].required) {
+            if (
+                typeof payload[key] == "undefined" ||
+                payload[key] == null ||
+                payload[key] == "" ||
+                payload[key] == "null" // TODO: this should be highlighted and reviewed by end developer
+            ) {
+                console.log("field " + key + ": is required");
+            }
+        }
         validations[key].roles.forEach((role) => {
             switch (role.condition) {
                 case "regex":
