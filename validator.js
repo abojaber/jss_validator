@@ -48,6 +48,8 @@ function validate_id_type(id_type, id_number) {
             return !/^(1)\d{9,9}$/.test(id_number);
         case "IQA":
             return !/^(4|2)\d{9,9}$/.test(id_number);
+        default:
+            return true;
     }
 }
 // END HELPERS
