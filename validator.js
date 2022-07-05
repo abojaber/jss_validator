@@ -44,7 +44,6 @@ function generateError(code, message) {
  */
 
 function compare(operator, left, right) {
-    console.log("is reqired");
     switch (operator) {
         case "is":
             return left == right;
