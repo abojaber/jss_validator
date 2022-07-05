@@ -47,11 +47,16 @@ function compare(operator, left, right) {
     console.log("is reqired");
     switch (operator) {
         case "is":
-            console.log("is is");
             return left == right;
         case "gt":
-            console.log("is gt");
             return left > right;
+        case "lt":
+            return left < right;
+        case "gte":
+            return left >= right;
+        case "lte":
+            return left <= right;
+
         // case "in": return right.includes(left);
     }
 }
