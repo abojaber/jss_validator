@@ -1,13 +1,7 @@
 // Debug
 require("./payload.js");
 require("./validation_roles");
-console.log("Debug: validations: ");
-console.log(validations);
-console.log("Debug: payload");
-console.log(payload);
-console.log("===========================================================");
 // End Debug
-
 // START VALIDATOR SCRIPT FROM HERE
 // HELPERS
 /***
@@ -18,9 +12,7 @@ console.log("===========================================================");
  * @otherArguments {String | Number}
  * @returns {String}
  */
-const parameterizedString = (...args) => {
-    const str = args[0];
-    const params = args.filter((arg, index) => index !== 0);
+const parameterizedString = (str, params) => {
     if (!str) return "";
     return str.replace(/%s[0-9]+/g, (matchedStr) => {
         const variableIndex = matchedStr.replace("%s", "") - 1;
@@ -36,7 +28,7 @@ function generateError(code, message) {
         code: code,
         message: message,
     };
-    console.log(JSON.stringify(failure));
+    console.log(JSON.stringify(failure)); // TODO replace this in APIGEE
 }
 
 /**
@@ -105,7 +97,7 @@ var validate = function (payload, validations) {
                 payload[key] == "" ||
                 payload[key] == "null" // TODO: this should be highlighted and reviewed by end developer
             ) {
-                console.log("field " + key + ": is required");
+                generateError("CODE?", "field " + key + ": is required");
             }
         }
         validations[key].roles.forEach((role) => {
@@ -123,11 +115,10 @@ var validate = function (payload, validations) {
                     if (!(payload[key] > vl)) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                role.value
-                            )
+                                role.value,
+                            ])
                         );
                     }
                     break;
@@ -139,11 +130,10 @@ var validate = function (payload, validations) {
                     if (!(payload[key] < vl)) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                role.value
-                            )
+                                role.value,
+                            ])
                         );
                     }
                     break;
@@ -156,11 +146,10 @@ var validate = function (payload, validations) {
                     if (!(new Date(vl).getTime() > dt.getTime())) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                role.date
-                            )
+                                role.date,
+                            ])
                         );
                     }
                     break;
@@ -173,11 +162,10 @@ var validate = function (payload, validations) {
                     if (!(new Date(vl).getTime() < dt.getTime())) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                role.date
-                            )
+                                role.date,
+                            ])
                         );
                     }
                     break;
@@ -185,11 +173,10 @@ var validate = function (payload, validations) {
                     if (!role.value.split("|").includes(String(payload[key]))) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                role.value
-                            )
+                                role.value,
+                            ])
                         );
                     }
                     break;
@@ -198,11 +185,10 @@ var validate = function (payload, validations) {
                     if (eval(role.value)(id_type, payload[key])) {
                         generateError(
                             role.error,
-                            parameterizedString(
-                                role.message,
+                            parameterizedString(role.message, [
                                 payload[key],
-                                id_type
-                            )
+                                id_type,
+                            ])
                         );
                     }
                     break;
@@ -210,11 +196,10 @@ var validate = function (payload, validations) {
                     compared_to = GetPropertyValue(payload, role.key);
                     if (compare(role._condition, role.value, compared_to)) {
                         if (!isExist(payload, key)) {
-                            message = parameterizedString(
-                                role.message,
+                            message = parameterizedString(role.message, [
                                 key,
-                                role.key
-                            );
+                                role.key,
+                            ]);
                             generateError(role.error, message);
                         }
                     }
