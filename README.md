@@ -6,7 +6,16 @@ This project aim to provide you with simple validator to use it against json. ma
 
 ## using this script
 
-this script consist of 3 files `payload.js` which use only for simulate HTTP payload, `vaildation_roles.js` containing roles for each fields and `validator.js` file. `validator.js` file is the core file that will process the validations.
+-   this script consist of 3 files `payload.js` which use only for simulate HTTP payload, `vaildation_roles.js` containing roles for each fields and `validator.js` file. `validator.js` file is the core file that will process the validations.
+-   remove debug section in `validation.js` file header, Lines: 1-9, before using script
+    `TODO:// update the include steps`
+-   review export section (last 3 lines in `validation_roles.js`)
+
+### to use this script in APIGEE
+
+1. make a javascript file to export validation roles for payload.
+1. make a javascript include content of `validator.js`.
+1. update `generateError` function to export the error to your prefer format and variable.
 
 ### Regex Validation
 
