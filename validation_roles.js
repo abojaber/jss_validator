@@ -13,7 +13,7 @@ validations = {
                 value: "validate_id_type",
                 param: "id_type",
                 error: "AF001A",
-                message: "id_number is not correct id_type",
+                message: "id_number (%s1) is not correct id_type (%s2)",
             },
         ],
     },

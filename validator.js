@@ -28,6 +28,16 @@ const parameterizedString = (...args) => {
     });
 };
 
+/**
+ * @return {structured single error}
+ */
+function generateError(code, message) {
+    failure = {
+        code: code,
+        message: message,
+    };
+    console.log(JSON.stringify(failure));
+}
 // https://stackoverflow.com/questions/37510640/how-to-get-property-value-from-a-javascript-object
 /**
  * return data of dataToRetrieve key in object
@@ -71,7 +81,7 @@ var validate = function (payload, validations) {
             switch (role.condition) {
                 case "regex":
                     if (!role.regex.test(payload[key])) {
-                        console.log(role.error + ": " + role.message);
+                        generateError(role.error, role.message);
                     }
                     break;
                 case "bigger_than":
@@ -80,7 +90,8 @@ var validate = function (payload, validations) {
                             ? role.value
                             : GetPropertyValue(payload, role.value);
                     if (!(payload[key] > vl)) {
-                        console.log(
+                        generateError(
+                            role.error,
                             parameterizedString(
                                 role.message,
                                 payload[key],
@@ -95,7 +106,8 @@ var validate = function (payload, validations) {
                             ? role.value
                             : GetPropertyValue(payload, role.value);
                     if (!(payload[key] < vl)) {
-                        console.log(
+                        generateError(
+                            role.error,
                             parameterizedString(
                                 role.message,
                                 payload[key],
@@ -111,7 +123,8 @@ var validate = function (payload, validations) {
                             ? role.date
                             : GetPropertyValue(payload, role.date);
                     if (!(new Date(vl).getTime() > dt.getTime())) {
-                        console.log(
+                        generateError(
+                            role.error,
                             parameterizedString(
                                 role.message,
                                 payload[key],
@@ -127,7 +140,8 @@ var validate = function (payload, validations) {
                             ? role.date
                             : GetPropertyValue(payload, role.date);
                     if (!(new Date(vl).getTime() < dt.getTime())) {
-                        console.log(
+                        generateError(
+                            role.error,
                             parameterizedString(
                                 role.message,
                                 payload[key],
@@ -138,7 +152,8 @@ var validate = function (payload, validations) {
                     break;
                 case "in_list":
                     if (!role.value.split("|").includes(String(payload[key]))) {
-                        console.log(
+                        generateError(
+                            role.error,
                             parameterizedString(
                                 role.message,
                                 payload[key],
@@ -150,7 +165,14 @@ var validate = function (payload, validations) {
                 case "function":
                     id_type = GetPropertyValue(payload, role.param); // TODO: simplify this
                     if (eval(role.value)(id_type, payload[key])) {
-                        console.log(role.message, payload[key]);
+                        generateError(
+                            role.error,
+                            parameterizedString(
+                                role.message,
+                                payload[key],
+                                id_type
+                            )
+                        );
                     }
                     break;
             }
