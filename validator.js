@@ -62,6 +62,16 @@ function validate_id_type(id_type, id_number) {
             return true;
     }
 }
+function isExist(payload, key) {
+    return !(
+        (
+            typeof payload[key] == "undefined" ||
+            payload[key] == null ||
+            payload[key] == "" ||
+            payload[key] == "null"
+        ) // TODO: this should be highlighted and reviewed by end developer
+    );
+}
 // END HELPERS
 //
 var validate = function (payload, validations) {
@@ -173,6 +183,21 @@ var validate = function (payload, validations) {
                                 id_type
                             )
                         );
+                    }
+                    break;
+                case "required_if":
+                    console.log(role, key);
+                    compared_to = GetPropertyValue(payload, role.key);
+                    switch (role._condition) {
+                        case "is":
+                            if (role.value == compared_to) {
+                                if (!isExist(payload, key))
+                                    generateError(
+                                        role.error,
+                                        "FIELD IS REQUIRED BASED ON OTHER FIELD VALUE"
+                                    );
+                            }
+                            break;
                     }
                     break;
             }

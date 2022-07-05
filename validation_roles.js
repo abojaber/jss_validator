@@ -21,6 +21,14 @@ validations = {
         required: false,
         roles: [
             {
+                condition: "required_if", // required_if & required_when
+                error: "RQ0001",
+                key: "id_type",
+                _condition: "is", // is, in, gt,lt, gte, lte
+                value: "IQA",
+                message: "$s1 field is required",
+            },
+            {
                 regex: /\w{3,10}/,
                 condition: "regex",
                 error: "AF0002",
