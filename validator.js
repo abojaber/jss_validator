@@ -38,6 +38,23 @@ function generateError(code, message) {
     };
     console.log(JSON.stringify(failure));
 }
+
+/**
+ * comparison function
+ */
+
+function compare(operator, left, right) {
+    console.log("is reqired");
+    switch (operator) {
+        case "is":
+            console.log("is is");
+            return left == right;
+        case "gt":
+            console.log("is gt");
+            return left > right;
+        // case "in": return right.includes(left);
+    }
+}
 // https://stackoverflow.com/questions/37510640/how-to-get-property-value-from-a-javascript-object
 /**
  * return data of dataToRetrieve key in object
@@ -186,20 +203,17 @@ var validate = function (payload, validations) {
                     }
                     break;
                 case "required_if":
-                    console.log(role, key);
                     compared_to = GetPropertyValue(payload, role.key);
-                    switch (role._condition) {
-                        case "is":
-                            if (role.value == compared_to) {
-                                if (!isExist(payload, key))
-                                    generateError(
-                                        role.error,
-                                        "FIELD IS REQUIRED BASED ON OTHER FIELD VALUE"
-                                    );
-                            }
-                            break;
+                    if (compare(role._condition, role.value, compared_to)) {
+                        if (!isExist(payload, key)) {
+                            message = parameterizedString(
+                                role.message,
+                                key,
+                                role.key
+                            );
+                            generateError(role.error, message);
+                        }
                     }
-                    break;
             }
         });
     }
