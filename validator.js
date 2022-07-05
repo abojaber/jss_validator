@@ -56,8 +56,8 @@ function compare(operator, left, right) {
             return left >= right;
         case "lte":
             return left <= right;
-
-        // case "in": return right.includes(left);
+        case "in":
+            return left.split("|").includes(right);
     }
 }
 // https://stackoverflow.com/questions/37510640/how-to-get-property-value-from-a-javascript-object

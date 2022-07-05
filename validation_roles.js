@@ -21,12 +21,12 @@ validations = {
         required: false,
         roles: [
             {
-                condition: "required_if", // required_if & required_when
+                condition: "required_if", // required_if
                 error: "RQ0001",
                 key: "id_type",
-                _condition: "is", // is, in, gt,lt, gte, lte
-                value: "IQA",
-                message: "$s1 field is required",
+                _condition: "in", // is, in, gt,lt, gte, lte
+                value: "IQA|BRN",
+                message: "%s1 field is required based on %s2 value",
             },
             {
                 regex: /\w{3,10}/,
