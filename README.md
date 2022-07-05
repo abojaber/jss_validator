@@ -7,6 +7,7 @@ This project aim to provide you with simple validator to use it against json. ma
 ## using this script
 
 -   this script consist of 3 files `payload.js` which use only for simulate HTTP payload, `vaildation_roles.js` containing roles for each fields and `validator.js` file. `validator.js` file is the core file that will process the validations.
+-   to test the script run `node validator.js`. you may modify `payload.js` file to test errors.
 -   remove debug section in `validation.js` file header, Lines: 1-9, before using script
     `TODO:// update the include steps`
 -   review export section (last 3 lines in `validation_roles.js`)
@@ -123,3 +124,12 @@ provide a list of values separated by `|`
 This will check if the field is not submitted (`undefined`) or its value is `null` including `""` & `"null"`
 
 -   you have to check `validator.js` file.
+
+### Required fields
+
+there is two ways for marking field as a required field; first one by adding `required: true` property to field validation object. this means the field is always required.
+second method is write a role:
+
+#### field required if other field exist
+#### field required based on other field value (list)
+#### field required based on other field value (comparison)
