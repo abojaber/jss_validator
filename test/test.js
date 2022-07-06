@@ -44,13 +44,38 @@ describe("Regex validation: ", function () {
 });
 describe("Numbers", function () {
     it("Generate error if field not equal expected");
-    it("Generate error if field less than fixed number");
-    it("Generate error if field more than expected");
+    it("Generate error if field less than fixed number", function () {
+        assert.equal(
+            validate(
+                (payload = payload_numbers),
+                (validations = number_smaller)
+            ).code,
+            "CM0002"
+        );
+    });
+    it("Generate error if field more than expected", function () {
+        assert.equal(
+            validate((payload = payload_numbers), (validations = number_bigger))
+                .code,
+            "CM0001"
+        );
+    });
 });
 
 describe("Dates", function () {
-    it("Generate error if field is before expected");
-    it("Generate error if field is after expected");
+    it("Generate error if field is before expected", function () {
+        assert.equal(
+            validate((payload = payload_date), (validations = date_before))
+                .code,
+            "DT0001"
+        );
+    });
+    it("Generate error if field is after expected", function () {
+        assert.equal(
+            validate((payload = payload_date), (validations = date_after)).code,
+            "DT0002"
+        );
+    });
 });
 
 describe("Customized by function", function () {

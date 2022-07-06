@@ -50,6 +50,59 @@ regex_mobile = {
         ],
     },
 };
+number_bigger = {
+    age: {
+        required: true,
+        roles: [
+            {
+                condition: "bigger_than",
+                value: 200,
+                error: "CM0001",
+                message: "numbers not bigger than 200",
+            },
+        ],
+    },
+};
+number_smaller = {
+    age: {
+        required: true,
+        roles: [
+            {
+                condition: "smaller_than",
+                value: 20,
+                error: "CM0002",
+                message: "Number not smaller than 10",
+            },
+        ],
+    },
+};
+date_before = {
+    birthday: {
+        required: true,
+        roles: [
+            {
+                condition: "after_date",
+                date: new Date(),
+                error: "DT0001",
+                message: "%1 is not after %2",
+            },
+        ],
+    },
+};
+
+date_after = {
+    next_visit: {
+        required: true,
+        roles: [
+            {
+                condition: "before_date",
+                date: new Date(),
+                error: "DT0002",
+                message: "%1 is not after %2",
+            },
+        ],
+    },
+};
 module.exports = {
     regex_digit: regex_number,
     regex_price: regex_float,
