@@ -11,6 +11,7 @@ payload_date = {
     birthday: "2003-01-01",
     next_visit: "2023-01-01",
 };
+func_val = { id_number: 1010101010, id_type: "IQA" };
 module.exports = {
     numbers: payload_numbers,
     text: payload_text,

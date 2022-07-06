@@ -79,7 +79,12 @@ describe("Dates", function () {
 });
 
 describe("Customized by function", function () {
-    it("Generate error based on function return ");
+    it("Generate error based on function return ", function () {
+        assert.equal(
+            validate((payload = func_val), (validations = use_function)).code,
+            "FN0001"
+        );
+    });
 });
 describe("Required", function () {
     it("Generate error if field equal value");

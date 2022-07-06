@@ -103,6 +103,21 @@ date_after = {
         ],
     },
 };
+
+use_function = {
+    id_number: {
+        required: true,
+        roles: [
+            {
+                condition: "function",
+                value: "validate_id_type",
+                param: "id_type",
+                error: "FN0001",
+                message: "id_number (%s1) is not correct id_type (%s2)",
+            },
+        ],
+    },
+};
 module.exports = {
     regex_digit: regex_number,
     regex_price: regex_float,
