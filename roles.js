@@ -118,6 +118,98 @@ use_function = {
         ],
     },
 };
+
+required_if_equal = {
+    iqama_number: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0001",
+                key: "id_type",
+                _condition: "is",
+                value: "IQA",
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
+required_if_gt = {
+    discount: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0002",
+                key: "age",
+                _condition: "gt",
+                value: 200,
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
+required_if_gte = {
+    discount: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0002",
+                key: "age",
+                _condition: "gte",
+                value: 103,
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
+
+required_if_lt = {
+    discount: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0003",
+                key: "age",
+                _condition: "lt",
+                value: 10,
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
+required_if_lte = {
+    discount: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0004",
+                key: "age",
+                _condition: "lte",
+                value: 103,
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
+required_if_in = {
+    discount: {
+        required: false,
+        roles: [
+            {
+                condition: "required_if",
+                error: "RQ0005",
+                key: "id_type",
+                _condition: "in",
+                value: "ABC|IQA",
+                message: "%s1 field is required based on %s2 value",
+            },
+        ],
+    },
+};
 module.exports = {
     regex_digit: regex_number,
     regex_price: regex_float,

@@ -86,11 +86,54 @@ describe("Customized by function", function () {
         );
     });
 });
-describe("Required", function () {
-    it("Generate error if field equal value");
-    it("Generate error if field greater than value");
-    it("Generate error if field greater than or equal value");
-    it("Generate error if field lest than value");
-    it("Generate error if field lest than or equal value");
-    it("Generate error if field in a defined list");
+describe("Required based on other field value", function () {
+    it("Generate error if field equal value", function () {
+        assert.equal(
+            validate((payload = func_val), (validations = required_if_equal))
+                .code,
+            "RQ0001"
+        );
+    });
+    it("Generate error if field greater than value", function () {
+        assert.equal(
+            validate(
+                (payload = payload_numbers),
+                (validations = required_if_gt)
+            ).code,
+            "RQ0002"
+        );
+    });
+    it("Generate error if field greater than or equal value", function () {
+        assert.equal(
+            validate(
+                (payload = payload_numbers),
+                (validations = required_if_gte)
+            ).code,
+            "RQ0002"
+        );
+    });
+    it("Generate error if field lest than value", function () {
+        assert.equal(
+            validate(
+                (payload = payload_numbers),
+                (validations = required_if_lt)
+            ).code,
+            "RQ0003"
+        );
+    });
+    it("Generate error if field lest than or equal value", function () {
+        assert.equal(
+            validate(
+                (payload = payload_numbers),
+                (validations = required_if_lte)
+            ).code,
+            "RQ0004"
+        );
+    });
+    it("Generate error if field in a defined list", function () {
+        assert.equal(
+            validate((payload = func_val), (validations = required_if_in)).code,
+            "RQ0005"
+        );
+    });
 });
