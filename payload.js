@@ -5,6 +5,7 @@ payload_numbers = {
 payload_text = {
     email: "exampleexample.com",
     name: "first name",
+    mobile: "0933232323",
 };
 module.exports = {
     numbers: payload_numbers,

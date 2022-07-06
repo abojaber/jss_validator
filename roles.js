@@ -37,8 +37,22 @@ regex_email = {
         ],
     },
 };
+regex_mobile = {
+    mobile: {
+        required: true,
+        roles: [
+            {
+                condition: "regex",
+                regex: /^(009665)\d{8}$/,
+                error: "MB0001",
+                message: "The Field should be mobile number",
+            },
+        ],
+    },
+};
 module.exports = {
     regex_digit: regex_number,
     regex_price: regex_float,
     regex_text: regex_email,
+    regex_mb: regex_mobile,
 };

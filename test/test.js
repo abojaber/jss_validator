@@ -33,7 +33,13 @@ describe("Regex validation: ", function () {
                 "ST0001"
             );
         });
-        it("Generate error if not a saudi mobile number");
+        it("Generate error if not a saudi mobile number", function () {
+            assert.equal(
+                validate((payload = payload_text), (validations = regex_mobile))
+                    .code,
+                "MB0001"
+            );
+        });
     });
 });
 describe("Numbers", function () {
