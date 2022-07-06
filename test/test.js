@@ -1,30 +1,38 @@
-// var validator = require("../validator");
-// var payload = require("../payload.js");
+var roles = require("../roles.js");
+var payload = require("../payload.js");
 var validate = require("../validator.js");
-payload = {
-    id_number: 10101010,
-};
+
+console.log(payload_text);
 
 var assert = require("assert");
-// console.log(validate(payload, roles));
-describe("Regix validation ", function () {
-    describe("check By Error Code", function () {
-        it("count digits", function () {
+
+describe("Regex validation: ", function () {
+    describe("Number:", function () {
+        it("Generate Error if not exact 2 digit", function () {
             assert.equal(
-                validate(payload, {
-                    id_number: {
-                        required: true,
-                        roles: [
-                            {
-                                regex: /^\d{10,10}$/,
-                                condition: "regex",
-                                error: "AF0001",
-                                message: "field should 10 digits",
-                            },
-                        ],
-                    },
-                }).code,
-                "AF0001"
+                validate(
+                    (payload = payload_numbers),
+                    (validations = regex_number)
+                ).code,
+                "NB0001"
+            );
+        });
+        it("Generate Error if not currency", function () {
+            assert.equal(
+                validate(
+                    (payload = payload_numbers),
+                    (validations = regex_float)
+                ).code,
+                "FT0001"
+            );
+        });
+    });
+    describe("Text:", function () {
+        it("Generate Error if not email", function () {
+            assert.equal(
+                validate((payload = payload_text), (validations = regex_email))
+                    .code,
+                "ST0001"
             );
         });
     });
