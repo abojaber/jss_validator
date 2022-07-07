@@ -50,6 +50,20 @@ regex_mobile = {
         ],
     },
 };
+number_equal = {
+    age: {
+        required: true,
+        roles: [
+            {
+                condition: "compare_with",
+                _condition: "is",
+                value: 13,
+                error: "CM0001",
+                message: "Error code",
+            },
+        ],
+    },
+};
 number_bigger = {
     age: {
         required: true,

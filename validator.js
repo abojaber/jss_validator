@@ -213,6 +213,17 @@ var validate = function (payload, validations) {
                                 throw BreakException;
                             }
                         }
+                        break;
+                    case "compare_with":
+                        if (!compare("is", payload[key], role.value)) {
+                            message = parameterizedString(role.message, [
+                                key,
+                                role.key,
+                            ]);
+                            error = generateError(role.error, message);
+                            throw BreakException;
+                        }
+                        break;
                 }
             });
         } catch (e) {

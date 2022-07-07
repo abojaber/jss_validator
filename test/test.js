@@ -43,7 +43,13 @@ describe("Regex validation: ", function () {
     });
 });
 describe("Numbers", function () {
-    it("Generate error if field not equal expected");
+    it("Generate error if field not equal expected", function () {
+        assert.equal(
+            validate((payload = payload_numbers), (validations = number_equal))
+                .code,
+            "CM0001"
+        );
+    });
     it("Generate error if field less than fixed number", function () {
         assert.equal(
             validate(
