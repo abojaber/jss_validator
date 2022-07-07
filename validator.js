@@ -115,7 +115,7 @@ var validate = function (payload, validations) {
                             error = generateError(
                                 role.error,
                                 parameterizedString(role.message, [
-                                    payload[key],
+                                    key,
                                     role.value,
                                 ])
                             );
@@ -208,6 +208,7 @@ var validate = function (payload, validations) {
                                 message = parameterizedString(role.message, [
                                     key,
                                     role.key,
+                                    role.value,
                                 ]);
                                 error = generateError(role.error, message);
                                 throw BreakException;
@@ -215,10 +216,12 @@ var validate = function (payload, validations) {
                         }
                         break;
                     case "compare_with":
-                        if (!compare("is", payload[key], role.value)) {
+                        if (
+                            !compare(role._condition, payload[key], role.value)
+                        ) {
                             message = parameterizedString(role.message, [
                                 key,
-                                role.key,
+                                role.value,
                             ]);
                             error = generateError(role.error, message);
                             throw BreakException;
