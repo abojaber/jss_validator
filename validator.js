@@ -83,7 +83,11 @@ function isExist(payload, key) {
 }
 // END HELPERS
 //
+
+
+
 var validate = function (payload, validations) {
+    errorList = new Array();
     var error = null;
     for (key in validations) {
         //check if field required
@@ -94,127 +98,132 @@ var validate = function (payload, validations) {
                 payload[key] == "" ||
                 payload[key] == "null" // TODO: this should be highlighted and reviewed by end developer
             ) {
-                return generateError("CODE?", "field " + key + ": is required");
+                error = generateError("CODE?", "field " + key + ": is required");
+                errorList.push(error);
+                return;
             }
         }
         try {
-            validations[key].roles.forEach((role) => {
-                switch (role.condition) {
+            validations[key].rules.forEach((rule) => {
+                switch (rule.condition) {
                     case "regex":
-                        if (!role.regex.test(payload[key])) {
-                            error = generateError(role.error, role.message);
-                            throw BreakException;
+                        if (!rule.regex.test(payload[key])) {
+                            error = generateError(rule.error, rule.message);
+                            errorList.push(error);
                         }
                         break;
                     case "bigger_than":
                         var vl =
-                            typeof role.value == "number"
-                                ? role.value
-                                : GetPropertyValue(payload, role.value);
+                            typeof rule.value == "number"
+                                ? rule.value
+                                : GetPropertyValue(payload, rule.value);
                         if (!(payload[key] > vl)) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.value,
+                                    rule.value,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "smaller_than":
                         var vl =
-                            typeof role.value == "number"
-                                ? role.value
-                                : GetPropertyValue(payload, role.value);
+                            typeof rule.value == "number"
+                                ? rule.value
+                                : GetPropertyValue(payload, rule.value);
                         if (!(payload[key] < vl)) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.value,
+                                    rule.value,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "before_date":
                         var dt = new Date(payload[key]);
                         var vl =
-                            role.date instanceof Date
-                                ? role.date
-                                : GetPropertyValue(payload, role.date);
+                            rule.date instanceof Date
+                                ? rule.date
+                                : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() > dt.getTime())) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.date,
+                                    rule.date,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "after_date":
                         var dt = new Date(payload[key]);
                         var vl =
-                            role.date instanceof Date
-                                ? role.date
-                                : GetPropertyValue(payload, role.date);
+                            rule.date instanceof Date
+                                ? rule.date
+                                : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() < dt.getTime())) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.date,
+                                    rule.date,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "in_list":
                         if (
-                            !role.value
+                            !rule.value
                                 .split("|")
                                 .includes(String(payload[key]))
                         ) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.value,
+                                    rule.value,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "function":
-                        id_type = GetPropertyValue(payload, role.param); // TODO: simplify this
-                        if (eval(role.value)(id_type, payload[key])) {
+                        id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
+                        if (eval(rule.value)(id_type, payload[key])) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
                                     id_type,
                                 ])
                             );
-                            throw BreakException;
+                            errorList.push(error);
                         }
                         break;
                     case "required_if":
-                        compared_to = GetPropertyValue(payload, role.key);
-                        if (compare(role._condition, role.value, compared_to)) {
+                        compared_to = GetPropertyValue(payload, rule.key);
+                        if (compare(rule._condition, rule.value, compared_to)) {
                             if (!isExist(payload, key)) {
-                                message = parameterizedString(role.message, [
+                                message = parameterizedString(rule.message, [
                                     key,
-                                    role.key,
+                                    rule.key,
                                 ]);
-                                error = generateError(role.error, message);
-                                throw BreakException;
+                                error = generateError(rule.error, message);
+                                errorList.push(error);
                             }
                         }
                 }
             });
+            if (errorList.length != 0){ 
+                return errorList;
+            }
         } catch (e) {
             return error;
         }
