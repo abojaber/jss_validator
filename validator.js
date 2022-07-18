@@ -98,26 +98,26 @@ var validate = function (payload, validations) {
             }
         }
         try {
-            validations[key].roles.forEach((role) => {
-                switch (role.condition) {
+            validations[key].rules.forEach((rule) => {
+                switch (rule.condition) {
                     case "regex":
-                        if (!role.regex.test(payload[key])) {
-                            error = generateError(role.error, role.message);
+                        if (!rule.regex.test(payload[key])) {
+                            error = generateError(rule.error, rule.message);
                             throw BreakException;
                         }
                         break;
                     case "bigger_than":
                         var vl =
-                            typeof role.value == "number"
-                                ? role.value
-                                : GetPropertyValue(payload, role.value);
+                            typeof rule.value == "number"
+                                ? rule.value
+                                : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] > vl)) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     key,
-                                    role.value,
+                                    rule.value,
                                 ])
                             );
                             throw BreakException;
@@ -125,16 +125,16 @@ var validate = function (payload, validations) {
                         break;
                     case "smaller_than":
                         var vl =
-                            typeof role.value == "number"
-                                ? role.value
-                                : GetPropertyValue(payload, role.value);
+                            typeof rule.value == "number"
+                                ? rule.value
+                                : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] < vl)) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.value,
+                                    rule.value,
                                 ])
                             );
                             throw BreakException;
@@ -143,16 +143,16 @@ var validate = function (payload, validations) {
                     case "before_date":
                         var dt = new Date(payload[key]);
                         var vl =
-                            role.date instanceof Date
-                                ? role.date
-                                : GetPropertyValue(payload, role.date);
+                            rule.date instanceof Date
+                                ? rule.date
+                                : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() > dt.getTime())) {
                             //TODO: use compare instead
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.date,
+                                    rule.date,
                                 ])
                             );
                             throw BreakException;
@@ -161,16 +161,16 @@ var validate = function (payload, validations) {
                     case "after_date":
                         var dt = new Date(payload[key]);
                         var vl =
-                            role.date instanceof Date
-                                ? role.date
-                                : GetPropertyValue(payload, role.date);
+                            rule.date instanceof Date
+                                ? rule.date
+                                : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() < dt.getTime())) {
                             //TODO: use compare instead
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
-                                    role.date,
+                                    rule.date,
                                 ])
                             );
                             throw BreakException;
@@ -178,25 +178,25 @@ var validate = function (payload, validations) {
                         break;
                     case "in_list":
                         if (
-                            role.value.split("|").includes(String(payload[key]))
+                            rule.value.split("|").includes(String(payload[key]))
                         )
                             //TODO: use compare instead
                             break;
                         error = generateError(
-                            role.error,
-                            parameterizedString(role.message, [
+                            rule.error,
+                            parameterizedString(rule.message, [
                                 payload[key],
-                                role.value,
+                                rule.value,
                             ])
                         );
                         throw BreakException;
 
                     case "function":
-                        id_type = GetPropertyValue(payload, role.param); // TODO: simplify this
-                        if (eval(role.value)(id_type, payload[key])) {
+                        id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
+                        if (eval(rule.value)(id_type, payload[key])) {
                             error = generateError(
-                                role.error,
-                                parameterizedString(role.message, [
+                                rule.error,
+                                parameterizedString(rule.message, [
                                     payload[key],
                                     id_type,
                                 ])
@@ -205,26 +205,26 @@ var validate = function (payload, validations) {
                         }
                         break;
                     case "required_if":
-                        compared_to = GetPropertyValue(payload, role.key);
-                        if (compare(role._condition, role.value, compared_to)) {
+                        compared_to = GetPropertyValue(payload, rule.key);
+                        if (compare(rule._condition, rule.value, compared_to)) {
                             if (isExist(payload, key)) break;
-                            message = parameterizedString(role.message, [
+                            message = parameterizedString(rule.message, [
                                 key,
-                                role.key,
-                                role.value,
+                                rule.key,
+                                rule.value,
                             ]);
-                            error = generateError(role.error, message);
+                            error = generateError(rule.error, message);
                             throw BreakException;
                         }
                         break;
                     case "compare_with":
-                        if (compare(role._condition, payload[key], role.value))
+                        if (compare(rule._condition, payload[key], rule.value))
                             break;
-                        message = parameterizedString(role.message, [
+                        message = parameterizedString(rule.message, [
                             key,
-                            role.value,
+                            rule.value,
                         ]);
-                        error = generateError(role.error, message);
+                        error = generateError(rule.error, message);
                         throw BreakException;
                 }
             });

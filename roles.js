@@ -1,7 +1,7 @@
 regex_number = {
     age: {
         required: true,
-        roles: [
+        rules: [
             {
                 regex: /^\d{2,2}$/,
                 condition: "regex",
@@ -14,7 +14,7 @@ regex_number = {
 regex_float = {
     price: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "regex",
                 regex: /^\d+.?\d{0,2}$/,
@@ -27,7 +27,7 @@ regex_float = {
 regex_email = {
     email: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "regex",
                 regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -40,7 +40,7 @@ regex_email = {
 regex_mobile = {
     mobile: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "regex",
                 regex: /^(009665)\d{8}$/,
@@ -53,7 +53,7 @@ regex_mobile = {
 number_equal = {
     age: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "compare_with",
                 _condition: "is",
@@ -67,7 +67,7 @@ number_equal = {
 number_bigger = {
     age: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "bigger_than",
                 value: 200,
@@ -80,7 +80,7 @@ number_bigger = {
 number_smaller = {
     age: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "smaller_than",
                 value: 20,
@@ -93,7 +93,7 @@ number_smaller = {
 date_before = {
     birthday: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "after_date",
                 date: new Date(),
@@ -107,7 +107,7 @@ date_before = {
 date_after = {
     next_visit: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "before_date",
                 date: new Date(),
@@ -121,7 +121,7 @@ date_after = {
 use_function = {
     id_number: {
         required: true,
-        roles: [
+        rules: [
             {
                 condition: "function",
                 value: "validate_id_type",
@@ -136,7 +136,7 @@ use_function = {
 required_if_equal = {
     iqama_number: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0001",
@@ -151,7 +151,7 @@ required_if_equal = {
 required_if_gt = {
     discount: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0002",
@@ -167,7 +167,7 @@ required_if_gt = {
 required_if_gte = {
     discount: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0002",
@@ -184,7 +184,7 @@ required_if_gte = {
 required_if_lt = {
     discount: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0003",
@@ -199,7 +199,7 @@ required_if_lt = {
 required_if_lte = {
     discount: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0004",
@@ -215,7 +215,7 @@ required_if_lte = {
 required_if_in = {
     discount: {
         required: false,
-        roles: [
+        rules: [
             {
                 condition: "required_if",
                 error: "RQ0005",
