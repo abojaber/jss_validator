@@ -1,4 +1,4 @@
-var roles = require("../roles.js");
+var rules = require("../rules.js");
 var payload = require("../payload.js");
 var validate = require("../validator.js");
 
