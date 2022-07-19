@@ -85,9 +85,9 @@ function isExist(payload, key) {
 //
 var validate = function (payload, validations) {
     var error = null;
-    for (key in validations) {
+    for (key in validations.fields) {
         //check if field required
-        if (validations[key].required) {
+        if (validations.fields[key].required) {
             if (
                 typeof payload[key] == "undefined" ||
                 payload[key] == null ||
@@ -98,7 +98,7 @@ var validate = function (payload, validations) {
             }
         }
         try {
-            validations[key].rules.forEach((rule) => {
+            validations.fields[key].rules.forEach((rule) => {
                 switch (rule.condition) {
                     case "regex":
                         if (!rule.regex.test(payload[key])) {
