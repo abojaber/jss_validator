@@ -118,14 +118,25 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] > vl)) {
-                            errors = generateError(
-                                rule.errors,
-                                parameterizedString(rule.message, [
-                                    key,
-                                    rule.value,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.errors,
+                                    parameterizedString(rule.message, [
+                                        key,
+                                        rule.value,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.errors,
+                                    parameterizedString(rule.message, [
+                                        key,
+                                        rule.value,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "smaller_than":
@@ -135,14 +146,25 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] < vl)) {
-                            errors = generateError(
-                                rule.errors,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.value,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.errors,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.value,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.errors,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.value,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "before_date":

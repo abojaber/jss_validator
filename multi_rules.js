@@ -67,6 +67,37 @@ multi_rules_date = {
         },
     },
 };
+multi_rules_compare = {
+    config: {
+        report: "LIST",
+    },
+    fields: {
+        age: {
+            required: true,
+            rules: [
+                {
+                    condition: "bigger_than",
+                    value: 200,
+                    error: "CM0001",
+                    message: "%s1 value is not bigger than %s2",
+                },
+            ],
+        },
+        price: {
+            required: true,
+            rules: [
+                {
+                    condition: "smaller_than",
+                    value: 2,
+                    error: "CM0002",
+                    message: "age value is not smaller than %s2",
+                },
+            ],
+        },
+    },
+};
+
+    
 module.exports = {
     multi_rules_regex: this.multi_rules_regex,
     multi_rules_date: this.multi_rules_date,

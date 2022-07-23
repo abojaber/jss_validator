@@ -36,5 +36,18 @@ describe("Multi error", function () {
             assert.include(result_date[1].message, "before");
         });
     });
-    describe("")
+    describe("comparison multi error", function () {
+        result_compare = validate(
+            payload_multi_regex,
+            (validations = multi_rules_compare)
+        );
+        it("Return list of comparison error",function () {
+            assert.typeOf(result_compare, "array");
+            assert.equal(result_compare.length, 2);
+        });
+        it("Return list of errors", function () {
+            assert.include(result_compare[0].message, "bigger");
+            assert.include(result_compare[1].message, "smaller"); 
+        })
+    });
 });
