@@ -13,7 +13,7 @@ payload_date = {
 };
 func_val = { id_number: 1010101010, id_type: "IQA" };
 
-payload_multi = {
+payload_multi_regex = {
     age: 103,
     price: 5.113,
     mobile: 044444,

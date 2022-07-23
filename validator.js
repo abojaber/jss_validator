@@ -84,7 +84,7 @@ function isExist(payload, key) {
 // END HELPERS
 //
 var validate = function (payload, validations) {
-    var errors = []
+    var errors = [];
     for (key in validations.fields) {
         //check if field required
         if (validations.fields[key].required) {
@@ -151,16 +151,28 @@ var validate = function (payload, validations) {
                             rule.date instanceof Date
                                 ? rule.date
                                 : GetPropertyValue(payload, rule.date);
+
                         if (!(new Date(vl).getTime() > dt.getTime())) {
-                            //TODO: use compare instead
-                            errors = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.date,
-                                ])
+                            if (!(new Date(vl).getTime() < dt.getTime())) {
+                                //TODO: use compare instead
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "after_date":
@@ -170,15 +182,24 @@ var validate = function (payload, validations) {
                                 ? rule.date
                                 : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() < dt.getTime())) {
-                            //TODO: use compare instead
-                            errors = generateError(
+                            if (validations.config.report !== "LIST") {
+                                //TODO: use compare instead
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(generateError(
                                 rule.error,
                                 parameterizedString(rule.message, [
                                     payload[key],
                                     rule.date,
-                                ])
-                            );
-                            throw BreakException;
+                                ])));
+            
                         }
                         break;
                     case "in_list":
@@ -237,6 +258,6 @@ var validate = function (payload, validations) {
             return errors;
         }
     }
-        return errors;
+    return errors;
 };
 module.exports = validate;
