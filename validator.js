@@ -17,7 +17,7 @@ const parameterizedString = (str, params) => {
 };
 
 /**
- * @return {structured single error}
+ * @return {structured single errors}
  */
 function generateError(code, message) {
     failure = {
@@ -84,7 +84,7 @@ function isExist(payload, key) {
 // END HELPERS
 //
 var validate = function (payload, validations) {
-    var error = null;
+    var errors = []
     for (key in validations.fields) {
         //check if field required
         if (validations.fields[key].required) {
@@ -102,8 +102,13 @@ var validate = function (payload, validations) {
                 switch (rule.condition) {
                     case "regex":
                         if (!rule.regex.test(payload[key])) {
-                            error = generateError(rule.error, rule.message);
-                            throw BreakException;
+                            if (validations.config.report !== "LIST"){
+                                errors = generateError(rule.error, rule.message);
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(rule.error, rule.message)
+                            );
                         }
                         break;
                     case "bigger_than":
@@ -113,8 +118,8 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] > vl)) {
-                            error = generateError(
-                                rule.error,
+                            errors = generateError(
+                                rule.errors,
                                 parameterizedString(rule.message, [
                                     key,
                                     rule.value,
@@ -130,8 +135,8 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] < vl)) {
-                            error = generateError(
-                                rule.error,
+                            errors = generateError(
+                                rule.errors,
                                 parameterizedString(rule.message, [
                                     payload[key],
                                     rule.value,
@@ -148,7 +153,7 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() > dt.getTime())) {
                             //TODO: use compare instead
-                            error = generateError(
+                            errors = generateError(
                                 rule.error,
                                 parameterizedString(rule.message, [
                                     payload[key],
@@ -166,7 +171,7 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() < dt.getTime())) {
                             //TODO: use compare instead
-                            error = generateError(
+                            errors = generateError(
                                 rule.error,
                                 parameterizedString(rule.message, [
                                     payload[key],
@@ -182,8 +187,8 @@ var validate = function (payload, validations) {
                         )
                             //TODO: use compare instead
                             break;
-                        error = generateError(
-                            rule.error,
+                        errors = generateError(
+                            rule.errors,
                             parameterizedString(rule.message, [
                                 payload[key],
                                 rule.value,
@@ -194,7 +199,7 @@ var validate = function (payload, validations) {
                     case "function":
                         id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
                         if (eval(rule.value)(id_type, payload[key])) {
-                            error = generateError(
+                            errors = generateError(
                                 rule.error,
                                 parameterizedString(rule.message, [
                                     payload[key],
@@ -213,7 +218,7 @@ var validate = function (payload, validations) {
                                 rule.key,
                                 rule.value,
                             ]);
-                            error = generateError(rule.error, message);
+                            errors = generateError(rule.errors, message);
                             throw BreakException;
                         }
                         break;
@@ -224,13 +229,14 @@ var validate = function (payload, validations) {
                             key,
                             rule.value,
                         ]);
-                        error = generateError(rule.error, message);
+                        errors = generateError(rule.errors, message);
                         throw BreakException;
                 }
             });
         } catch (e) {
-            return error;
+            return errors;
         }
     }
+        return errors;
 };
 module.exports = validate;

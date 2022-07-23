@@ -1,5 +1,7 @@
 regex_number = {
-    config: {},
+    config: {
+        report: null, // LIST, SINGLE, 
+    },
     fields: {
         age: {
             required: true,
