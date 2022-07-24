@@ -175,7 +175,7 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.date);
 
                         if (!(new Date(vl).getTime() > dt.getTime())) {
-                            if (!(new Date(vl).getTime() < dt.getTime())) {
+                            if (validations.config.report !== "LIST") {
                                 //TODO: use compare instead
                                 errors = generateError(
                                     rule.error,
