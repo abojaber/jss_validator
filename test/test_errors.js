@@ -8,7 +8,7 @@ var assert = require("chai").assert;
 var expect = require("chai").expect;
 // var should = require("expect");
 describe("Multi error", function () {
-    describe("Regex multi error", function () {
+    describe("\033[0;33m三\033[0m Regex multi error", function () {
         result_regex = validate(
             payload_multi_regex,
             (validations = multi_rules_regex)
@@ -25,7 +25,7 @@ describe("Multi error", function () {
         });
     });
 
-    describe("Date Multi error", function () {
+    describe("\033[33m三\033[0m Date Multi error", function () {
         result_date = validate(payload_date, (validations = multi_rules_date));
 
         it("Return list of Date errors", function () {
@@ -37,36 +37,36 @@ describe("Multi error", function () {
             assert.include(result_date[1].message, "before");
         });
     });
-    describe("comparison multi error", function () {
+    describe("\033[0;33m三\033[0m comparison multi error", function () {
         result_compare = validate(
             payload_multi_regex,
             (validations = multi_rules_compare)
         );
-        it("Return list of comparison error",function () {
+        it("Return list of comparison error", function () {
             assert.typeOf(result_compare, "array");
             assert.equal(result_compare.length, 2);
         });
         it("Return list of errors", function () {
             assert.include(result_compare[0].message, "bigger");
-            assert.include(result_compare[1].message, "smaller"); 
-        })
+            assert.include(result_compare[1].message, "smaller");
+        });
     });
 
-    describe("In list multi error", function () {
-       in_list = validate(
-           payload_multi_regex,
-           (validations = multi_rules_in_list)
-       );
-        it("Return list Of \"In list\" errors", function () {
-           assert.typeOf(in_list, "array");
-           assert.equal(in_list.length, 2);
-        }); 
+    describe("\033[0;33m三\033[0m In list multi error", function () {
+        in_list = validate(
+            payload_multi_regex,
+            (validations = multi_rules_in_list)
+        );
+        it('Return list Of "In list" errors', function () {
+            assert.typeOf(in_list, "array");
+            assert.equal(in_list.length, 2);
+        });
         it("Return list of errors", function () {
             assert.include(in_list[0].message, "Male|Female");
             assert.include(in_list[1].message, "smaller");
         });
     });
-    describe("Function multi erro", function () {
+    describe("\033[0;33m三\033[0m Function multi erro", function () {
         func_rule = validate(
             payload_multi_function,
             (validations = multi_rules_function)
@@ -81,8 +81,7 @@ describe("Multi error", function () {
         });
     });
 
-    describe("require_if multi error", function () {
-
+    describe("\033[0;33m三\033[0m require_if multi error", function () {
         require_if = validate(
             payload_multi_function,
             (validations = multi_rules_if)
@@ -97,7 +96,7 @@ describe("Multi error", function () {
             assert.include(require_if[1].message, "age value is not smaller");
         });
     });    
-    describe("compare_with multi error", function () {
+    describe("\033[0;33m三\033[0m compare_with multi error", function () {
         compare_with = validate(
             payload_multi_function,
             (validations = multi_rule_compare_with)

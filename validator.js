@@ -297,7 +297,6 @@ var validate = function (payload, validations) {
                         }
                         break;
                     case "compare_with":
-                        console.log("xxx")
                         if (compare(rule._condition, payload[key], rule.value))
                             break;
                         message = parameterizedString(rule.message, [
