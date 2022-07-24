@@ -102,8 +102,11 @@ var validate = function (payload, validations) {
                 switch (rule.condition) {
                     case "regex":
                         if (!rule.regex.test(payload[key])) {
-                            if (validations.config.report !== "LIST"){
-                                errors = generateError(rule.error, rule.message);
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    rule.message
+                                );
                                 throw BreakException;
                             }
                             errors.push(
@@ -120,7 +123,7 @@ var validate = function (payload, validations) {
                         if (!(payload[key] > vl)) {
                             if (validations.config.report !== "LIST") {
                                 errors = generateError(
-                                    rule.errors,
+                                    rule.error,
                                     parameterizedString(rule.message, [
                                         key,
                                         rule.value,
@@ -130,7 +133,7 @@ var validate = function (payload, validations) {
                             }
                             errors.push(
                                 generateError(
-                                    rule.errors,
+                                    rule.error,
                                     parameterizedString(rule.message, [
                                         key,
                                         rule.value,
@@ -148,7 +151,7 @@ var validate = function (payload, validations) {
                         if (!(payload[key] < vl)) {
                             if (validations.config.report !== "LIST") {
                                 errors = generateError(
-                                    rule.errors,
+                                    rule.error,
                                     parameterizedString(rule.message, [
                                         payload[key],
                                         rule.value,
@@ -158,7 +161,7 @@ var validate = function (payload, validations) {
                             }
                             errors.push(
                                 generateError(
-                                    rule.errors,
+                                    rule.error,
                                     parameterizedString(rule.message, [
                                         payload[key],
                                         rule.value,
@@ -215,13 +218,15 @@ var validate = function (payload, validations) {
                                 );
                                 throw BreakException;
                             }
-                            errors.push(generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.date,
-                                ])));
-            
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                )
+                            );
                         }
                         break;
                     case "in_list":
@@ -230,26 +235,49 @@ var validate = function (payload, validations) {
                         )
                             //TODO: use compare instead
                             break;
-                        errors = generateError(
-                            rule.errors,
-                            parameterizedString(rule.message, [
-                                payload[key],
-                                rule.value,
-                            ])
-                        );
-                        throw BreakException;
-
-                    case "function":
-                        id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
-                        if (eval(rule.value)(id_type, payload[key])) {
+                        if (validations.config.report !== "LIST") {
                             errors = generateError(
                                 rule.error,
                                 parameterizedString(rule.message, [
                                     payload[key],
-                                    id_type,
+                                    rule.value,
                                 ])
                             );
                             throw BreakException;
+                        }
+                        errors.push(
+                            generateError(
+                                rule.error,
+                                parameterizedString(rule.message, [
+                                    payload[key],
+                                    rule.value,
+                                ])
+                            )
+                        );
+                        break;
+
+                    case "function":
+                        id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
+                        if (eval(rule.value)(id_type, payload[key])) {
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        id_type,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        id_type,
+                                    ])
+                                )
+                            );
                         }
                         break;
                     case "required_if":
@@ -261,19 +289,27 @@ var validate = function (payload, validations) {
                                 rule.key,
                                 rule.value,
                             ]);
-                            errors = generateError(rule.errors, message);
-                            throw BreakException;
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(rule.error, message);
+                                throw BreakException;
+                            }
+                            errors.push(generateError(rule.error, message));
                         }
                         break;
                     case "compare_with":
+                        console.log("xxx")
                         if (compare(rule._condition, payload[key], rule.value))
                             break;
                         message = parameterizedString(rule.message, [
                             key,
                             rule.value,
                         ]);
-                        errors = generateError(rule.errors, message);
-                        throw BreakException;
+                        if (validations.config.report !== "LIST") {
+                            errors = generateError(rule.error, message);
+                            throw BreakException;
+                        }
+                        errors.push(generateError(rule.error, message));
+                        break;
                 }
             });
         } catch (e) {

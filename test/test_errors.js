@@ -1,3 +1,4 @@
+const { multi_rules_require_if } = require("../multi_rules.js");
 var rules = require("../multi_rules.js");
 var payload = require("../payload.js");
 var validate = require("../validator.js");
@@ -50,4 +51,65 @@ describe("Multi error", function () {
             assert.include(result_compare[1].message, "smaller"); 
         })
     });
+
+    describe("In list multi error", function () {
+       in_list = validate(
+           payload_multi_regex,
+           (validations = multi_rules_in_list)
+       );
+        it("Return list Of \"In list\" errors", function () {
+           assert.typeOf(in_list, "array");
+           assert.equal(in_list.length, 2);
+        }); 
+        it("Return list of errors", function () {
+            assert.include(in_list[0].message, "Male|Female");
+            assert.include(in_list[1].message, "smaller");
+        });
+    });
+    describe("Function multi erro", function () {
+        func_rule = validate(
+            payload_multi_function,
+            (validations = multi_rules_function)
+        );
+        it('Return list Of "function" errors', function () {
+            assert.typeOf(func_rule, "array");
+            assert.equal(func_rule.length, 2);
+        });
+        it("Return list of errors", function () {
+            assert.include(func_rule[0].message, "not correct id_type");
+            assert.include(func_rule[1].message, "Male|Female");
+        });
+    });
+
+    describe("require_if multi error", function () {
+
+        require_if = validate(
+            payload_multi_function,
+            (validations = multi_rules_if)
+        );
+
+        it('Return list Of "require_if" errors', function () {
+            assert.typeOf(require_if, "array");
+            assert.equal(require_if.length, 2);
+        });
+        it("Return list of errors", function () {
+            assert.include(require_if[0].message, "id_code field");
+            assert.include(require_if[1].message, "age value is not smaller");
+        });
+    });    
+    describe("compare_with multi error", function () {
+        compare_with = validate(
+            payload_multi_function,
+            (validations = multi_rule_compare_with)
+        );
+
+        it('Return list Of "require_if" errors', function () {
+            assert.typeOf(compare_with, "array");
+            assert.equal(compare_with.length, 2);
+        });
+        it("Return list of errors", function () {
+            assert.include(compare_with[0].message, "is not less than");
+            assert.include(compare_with[1].message, "age value is not smaller");
+        });
+    });    
 });
