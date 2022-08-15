@@ -17,7 +17,7 @@ const parameterizedString = (str, params) => {
 };
 
 /**
- * @return {structured single error}
+ * @return {structured single errors}
  */
 function generateError(code, message) {
     failure = {
@@ -84,10 +84,10 @@ function isExist(payload, key) {
 // END HELPERS
 //
 var validate = function (payload, validations) {
-    var error = null;
-    for (key in validations) {
+    var errors = [];
+    for (key in validations.fields) {
         //check if field required
-        if (validations[key].required) {
+        if (validations.fields[key].required) {
             if (
                 typeof payload[key] == "undefined" ||
                 payload[key] == null ||
@@ -98,12 +98,20 @@ var validate = function (payload, validations) {
             }
         }
         try {
-            validations[key].rules.forEach((rule) => {
+            validations.fields[key].rules.forEach((rule) => {
                 switch (rule.condition) {
                     case "regex":
                         if (!rule.regex.test(payload[key])) {
-                            error = generateError(rule.error, rule.message);
-                            throw BreakException;
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    rule.message
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(rule.error, rule.message)
+                            );
                         }
                         break;
                     case "bigger_than":
@@ -113,14 +121,25 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] > vl)) {
-                            error = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    key,
-                                    rule.value,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        key,
+                                        rule.value,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        key,
+                                        rule.value,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "smaller_than":
@@ -130,14 +149,25 @@ var validate = function (payload, validations) {
                                 : GetPropertyValue(payload, rule.value);
                         //TODO: use compare instead
                         if (!(payload[key] < vl)) {
-                            error = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.value,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.value,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.value,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "before_date":
@@ -146,16 +176,28 @@ var validate = function (payload, validations) {
                             rule.date instanceof Date
                                 ? rule.date
                                 : GetPropertyValue(payload, rule.date);
+
                         if (!(new Date(vl).getTime() > dt.getTime())) {
-                            //TODO: use compare instead
-                            error = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.date,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                //TODO: use compare instead
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "after_date":
@@ -165,15 +207,26 @@ var validate = function (payload, validations) {
                                 ? rule.date
                                 : GetPropertyValue(payload, rule.date);
                         if (!(new Date(vl).getTime() < dt.getTime())) {
-                            //TODO: use compare instead
-                            error = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    rule.date,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                //TODO: use compare instead
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        rule.date,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "in_list":
@@ -182,26 +235,49 @@ var validate = function (payload, validations) {
                         )
                             //TODO: use compare instead
                             break;
-                        error = generateError(
-                            rule.error,
-                            parameterizedString(rule.message, [
-                                payload[key],
-                                rule.value,
-                            ])
+                        if (validations.config.report !== "LIST") {
+                            errors = generateError(
+                                rule.error,
+                                parameterizedString(rule.message, [
+                                    payload[key],
+                                    rule.value,
+                                ])
+                            );
+                            throw BreakException;
+                        }
+                        errors.push(
+                            generateError(
+                                rule.error,
+                                parameterizedString(rule.message, [
+                                    payload[key],
+                                    rule.value,
+                                ])
+                            )
                         );
-                        throw BreakException;
+                        break;
 
                     case "function":
                         id_type = GetPropertyValue(payload, rule.param); // TODO: simplify this
                         if (eval(rule.value)(id_type, payload[key])) {
-                            error = generateError(
-                                rule.error,
-                                parameterizedString(rule.message, [
-                                    payload[key],
-                                    id_type,
-                                ])
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        id_type,
+                                    ])
+                                );
+                                throw BreakException;
+                            }
+                            errors.push(
+                                generateError(
+                                    rule.error,
+                                    parameterizedString(rule.message, [
+                                        payload[key],
+                                        id_type,
+                                    ])
+                                )
                             );
-                            throw BreakException;
                         }
                         break;
                     case "required_if":
@@ -213,8 +289,11 @@ var validate = function (payload, validations) {
                                 rule.key,
                                 rule.value,
                             ]);
-                            error = generateError(rule.error, message);
-                            throw BreakException;
+                            if (validations.config.report !== "LIST") {
+                                errors = generateError(rule.error, message);
+                                throw BreakException;
+                            }
+                            errors.push(generateError(rule.error, message));
                         }
                         break;
                     case "compare_with":
@@ -224,13 +303,18 @@ var validate = function (payload, validations) {
                             key,
                             rule.value,
                         ]);
-                        error = generateError(rule.error, message);
-                        throw BreakException;
+                        if (validations.config.report !== "LIST") {
+                            errors = generateError(rule.error, message);
+                            throw BreakException;
+                        }
+                        errors.push(generateError(rule.error, message));
+                        break;
                 }
             });
         } catch (e) {
-            return error;
+            return errors;
         }
     }
+    return errors;
 };
 module.exports = validate;

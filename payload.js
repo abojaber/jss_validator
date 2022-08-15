@@ -12,6 +12,18 @@ payload_date = {
     next_visit: "2023-01-01",
 };
 func_val = { id_number: 1010101010, id_type: "IQA" };
+
+payload_multi_regex = {
+    age: 103,
+    sex: "F",
+    price: 5.113,
+    mobile: 044444,
+};
+
+payload_multi_function = {
+    id_number: 10101010,
+    id_type: "NIN",
+};
 module.exports = {
     numbers: payload_numbers,
     text: payload_text,
