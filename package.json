@@ -1,7 +1,7 @@
 {
-    "name": "JS-Simple Object Validator",
+    "name": "jssv",
     "version": "0.8.0",
-    "description": "",
+    "description": "javascript simple validator",
     "main": "validator.js",
     "scripts": {
         "test": "node_modules/mocha/bin/mocha.js"

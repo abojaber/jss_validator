@@ -12,11 +12,15 @@ This project aim to provide you with simple validator to use it against json. ma
     `TODO:// update the include steps`
 -   review export section (last 3 lines in `validation_roles.js`)
 
+### install and testing
+1. install packages `npm install`
+2. run the script `npm install`
+3. run the script `node_modules/mocha/bin/mocha.js test`
 ### to use this script in APIGEE
 
 1. make a javascript file to export validation roles for payload.
-1. make a javascript include content of `validator.js`.
-1. update `generateError` function to export the error to your prefer format and variable.
+2. make a javascript include content of `validator.js`.
+3. update `generateError` function to export the error to your prefer format and variable.
 
 ### Regex Validation
 
