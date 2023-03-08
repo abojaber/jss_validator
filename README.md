@@ -14,8 +14,9 @@ This project aim to provide you with simple validator to use it against json. ma
 
 ### install and testing
 1. install packages `npm install`
-2. run the script `npm install`
+2. run the script `npm test`
 3. run the script `node_modules/mocha/bin/mocha.js test`
+
 ### to use this script in APIGEE
 
 1. make a javascript file to export validation roles for payload.
