@@ -137,7 +137,7 @@ date_after = {
             required: true,
             rules: [
                 {
-                    condition: "before_date",
+                    condition: "after_date",
                     date: new Date(),
                     error: "DT0002",
                     message: "%1 is not after %2",
